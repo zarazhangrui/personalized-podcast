@@ -1,0 +1,41 @@
+# =============================================================================
+# Sample Configuration — Zara's AI Tech Digest
+# =============================================================================
+# This is a filled-in example showing a working configuration.
+# Copy to ~/.claude/personalized-podcast/config.yaml and adjust as needed.
+# =============================================================================
+
+show_name: "My Daily Digest"
+hosts: 2
+length_minutes: 10
+tone: "casual and conversational"
+language: "en"
+
+sources:
+  rss:
+    - https://www.bensbites.com/feed
+    - https://read.technically.dev/feed
+    - https://www.latent.space/feed
+
+llm:
+  provider: "anthropic"
+  api_key_env: "ANTHROPIC_API_KEY"
+  model: "claude-sonnet-4-6"
+
+tts:
+  provider: "elevenlabs"
+  api_key_env: "ELEVENLABS_API_KEY"
+  host_a_voice_id: "pNInz6obpgDQGcFmaJgB"   # Adam
+  host_b_voice_id: "jBpfuIE2acCO8z3wKNLl"   # Emily
+
+publish:
+  github_repo: "username/my-podcast-feed"
+  github_pages_url: "https://username.github.io/my-podcast-feed"
+
+schedule:
+  frequency: "daily"
+  time: "08:00"
+  timezone: "America/Los_Angeles"
+
+retention:
+  max_episodes: 30

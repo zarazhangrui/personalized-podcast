@@ -1,0 +1,31 @@
+# =============================================================================
+# Personalized Podcast — Configuration
+# =============================================================================
+# Copy this file to ~/.claude/personalized-podcast/config.yaml and customize.
+# API keys go in ~/.claude/personalized-podcast/.env (NOT here).
+# =============================================================================
+
+# --- Show Settings ---
+show_name: "My Daily Digest"
+hosts: 2
+length_minutes: 10
+tone: "casual and conversational"
+language: "en"
+
+# --- Text-to-Speech Settings ---
+# Fish Audio turns the script into audio.
+# Get your API key at fish.audio, then paste it in .env as FISH_API_KEY
+tts:
+  provider: "fishaudio"
+  api_key_env: "FISH_API_KEY"
+  host_a_voice_id: ""   # Browse fish.audio/discovery to find a voice, copy its reference ID
+  host_b_voice_id: ""   # Pick one male + one female for contrast
+
+# --- Publishing Settings ---
+publish:
+  github_repo: "username/my-podcast-feed"
+  github_pages_url: "https://username.github.io/my-podcast-feed"
+
+# --- Retention ---
+retention:
+  max_episodes: 30

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0"
+     xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd"
+     xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>{{ show_name }}</title>
+    <link>{{ base_url }}</link>
+    <description>A personalized AI-generated podcast that remixes your favorite newsletters and feeds into an engaging daily show.</description>
+    <language>{{ language }}</language>
+    <atom:link href="{{ base_url }}/feed.xml" rel="self" type="application/rss+xml"/>
+
+    <!-- Show artwork -->
+    <image>
+      <url>{{ base_url }}/cover-art.png</url>
+      <title>{{ show_name }}</title>
+      <link>{{ base_url }}</link>
+    </image>
+    <itunes:image href="{{ base_url }}/cover-art.png"/>
+
+    <!-- iTunes/Podcast player metadata -->
+    <itunes:author>{{ show_name }}</itunes:author>
+    <itunes:summary>A personalized AI-generated podcast that remixes your favorite newsletters and feeds into an engaging daily show.</itunes:summary>
+    <itunes:category text="Technology"/>
+    <itunes:explicit>false</itunes:explicit>
+    <itunes:type>episodic</itunes:type>
+
+    {% for episode in episodes %}
+    <item>
+      <title>{{ episode.title }}</title>
+      <description>{{ episode.description }}</description>
+      <pubDate>{{ episode.pub_date }}</pubDate>
+      <enclosure url="{{ base_url }}/episodes/{{ episode.filename }}"
+                 length="{{ episode.file_size }}"
+                 type="audio/mpeg"/>
+      <guid isPermaLink="false">{{ episode.guid }}</guid>
+      <itunes:duration>{{ episode.duration }}</itunes:duration>
+      <itunes:summary>{{ episode.description }}</itunes:summary>
+    </item>
+    {% endfor %}
+  </channel>
+</rss>
