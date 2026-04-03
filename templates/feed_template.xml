@@ -5,7 +5,7 @@
   <channel>
     <title>{{ show_name }}</title>
     <link>{{ base_url }}</link>
-    <description>A personalized AI-generated podcast that remixes your favorite newsletters and feeds into an engaging daily show.</description>
+    <description>Personalized podcasts for Zara</description>
     <language>{{ language }}</language>
     <atom:link href="{{ base_url }}/feed.xml" rel="self" type="application/rss+xml"/>
 
@@ -19,7 +19,7 @@
 
     <!-- iTunes/Podcast player metadata -->
     <itunes:author>{{ show_name }}</itunes:author>
-    <itunes:summary>A personalized AI-generated podcast that remixes your favorite newsletters and feeds into an engaging daily show.</itunes:summary>
+    <itunes:summary>Personalized podcasts for Zara</itunes:summary>
     <itunes:category text="Technology"/>
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>

@@ -74,7 +74,7 @@ def check_gh_auth(logger):
         )
 
 
-def publish_episode(mp3_path, config, logger=None):
+def publish_episode(mp3_path, config, logger=None, episode_title=None, episode_description=None):
     """
     Publishes a podcast episode to GitHub Pages.
 
@@ -124,8 +124,8 @@ def publish_episode(mp3_path, config, logger=None):
     pub_date = formatdate(timeval=now.timestamp(), localtime=False, usegmt=True)
 
     episode = {
-        "title": f"{config.get('show_name', 'Daily Digest')} — {now.strftime('%B %d, %Y')}",
-        "description": f"Your personalized podcast for {now.strftime('%B %d, %Y')}",
+        "title": episode_title or f"{config.get('show_name', 'Daily Digest')} — {now.strftime('%B %d, %Y')}",
+        "description": episode_description or f"Your personalized podcast for {now.strftime('%B %d, %Y')}",
         "pub_date": pub_date,
         "filename": filename,
         "file_size": str(file_size),
@@ -265,6 +265,8 @@ if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(description="Publish a podcast episode to GitHub Pages")
     parser.add_argument("--mp3", help="Path to the MP3 file to publish (default: latest in episodes dir)")
+    parser.add_argument("--title", help="Episode title (default: show name + date)")
+    parser.add_argument("--description", help="Episode description")
     args = parser.parse_args()
 
     logger = setup_logging()
@@ -284,5 +286,5 @@ if __name__ == "__main__":
         mp3_path = mp3_files[-1]
 
     logger.info(f"Publishing episode: {mp3_path.name}")
-    feed_url = publish_episode(mp3_path, config, logger)
+    feed_url = publish_episode(mp3_path, config, logger, episode_title=args.title, episode_description=args.description)
     print(f"\nPublished! Feed URL: {feed_url}")

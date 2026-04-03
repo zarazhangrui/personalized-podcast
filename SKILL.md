@@ -52,6 +52,10 @@ Write a podcast script as a JSON array. The show has two hosts:
 
 Save the script to a file using the Write tool. Save it to: `~/.claude/personalized-podcast/scripts_output/YYYY-MM-DD.json` (use today's date).
 
+### Step 2.5: Ask for the episode title
+
+Ask the user what they'd like to title this episode. Suggest a short, descriptive title based on the content (e.g., "Permissionless Leverage in the AI Age" or "Why Grad School Might Not Be Worth It"). The user can accept your suggestion or provide their own. Remember this title for Step 4.
+
 ### Step 3: Generate audio
 
 Run the speak script to convert the script to audio:
@@ -69,10 +73,10 @@ If it fails with a quota error, tell the user and suggest retrying later with:
 
 ### Step 4: Publish to feed
 
-Run the publish script with the MP3 path from step 3:
+Run the publish script with the MP3 path from step 3 and the episode title from step 2.5:
 
 ```bash
-~/.claude/personalized-podcast/venv/bin/python ~/.claude/skills/personalized-podcast/scripts/publish.py --mp3 <path_to_mp3>
+~/.claude/personalized-podcast/venv/bin/python ~/.claude/skills/personalized-podcast/scripts/publish.py --mp3 <path_to_mp3> --title "<episode_title>" --description "<short_description>"
 ```
 
 ### Step 5: Confirm
