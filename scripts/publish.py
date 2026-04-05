@@ -105,12 +105,13 @@ def publish_episode(mp3_path, config, logger=None, episode_title=None, episode_d
 
     publish_config = config.get("publish", {})
     github_repo = publish_config.get("github_repo")
-    github_pages_url = publish_config.get("github_pages_url")
+    # Support both old (base_url) and new (base_url) config keys
+    base_url = publish_config.get("base_url") or publish_config.get("base_url")
 
     if not github_repo:
         raise RuntimeError("publish.github_repo is not set in config.yaml")
-    if not github_pages_url:
-        raise RuntimeError("publish.github_pages_url is not set in config.yaml")
+    if not base_url:
+        raise RuntimeError("publish.base_url is not set in config.yaml")
 
     # Verify GitHub CLI is authenticated
     check_gh_auth(logger)
@@ -130,7 +131,7 @@ def publish_episode(mp3_path, config, logger=None, episode_title=None, episode_d
         "filename": filename,
         "file_size": str(file_size),
         "duration": duration,
-        "guid": f"{github_pages_url}/episodes/{filename}",
+        "guid": f"{base_url}/episodes/{filename}",
     }
 
     # Work in a temp directory for git operations
@@ -184,7 +185,7 @@ def publish_episode(mp3_path, config, logger=None, episode_title=None, episode_d
 
         feed_xml = template.render(
             show_name=config.get("show_name", "My Daily Digest"),
-            base_url=github_pages_url,
+            base_url=base_url,
             language=config.get("language", "en"),
             episodes=episodes,
         )
@@ -225,7 +226,7 @@ def publish_episode(mp3_path, config, logger=None, episode_title=None, episode_d
             logger.info("Running git gc to clean up deleted episode history...")
             subprocess.run(["git", "gc", "--aggressive", "--prune=now"], cwd=str(repo_dir), capture_output=True)
 
-        feed_url = f"{github_pages_url}/feed.xml"
+        feed_url = f"{base_url}/feed.xml"
         logger.info(f"Published! Feed URL: {feed_url}")
         return feed_url
 

@@ -83,7 +83,7 @@ Run the publish script with the MP3 path from step 3 and the episode title from 
 
 Tell the user the episode is live. Remind them of their feed URL:
 > "New episode published! It will appear in your podcast app shortly."
-> "Feed URL: https://zarazhangrui.github.io/my-podcast-feed/feed.xml"
+> "Feed URL: https://made-for-zara.vercel.app/feed.xml"
 
 ## First-time setup
 
