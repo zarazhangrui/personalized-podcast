@@ -179,10 +179,10 @@ Give the user their feed URL and instructions:
 |-----|-----------------|
 | Apple Podcasts (Mac) | Menu bar: File > Add a Show by URL |
 | Apple Podcasts (iPhone) | Library > Edit (top right) > Add a Show by URL |
-| Overcast | + button > Add URL |
-| Pocket Casts | Search > Submit RSS Feed |
-| Castro | Discover > Subscribe by URL |
-| Snipd | Library > Add Podcast > Add by RSS Feed |
+| Overcast | "+" (top right) > Add URL |
+| Pocket Casts | Discover tab > paste URL in search bar > Subscribe |
+| Castro | Search tab > paste URL in search bar > Add Podcast |
+| Snipd | Home > Podcasts > three-dot menu (top right) > Add RSS |
 
 Feed URL: `https://USERNAME.github.io/podcast-feed/feed.xml`
 
