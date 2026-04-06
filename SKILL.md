@@ -70,35 +70,11 @@ Read all the content the user provided. If they pointed to files, read them with
 
 ### Step 2: Write the podcast script
 
-Write a podcast script as a JSON array. The show has two hosts:
+Read the prompt file at `~/.claude/skills/personalized-podcast/PROMPT.md` for the hosts, style, structure, and output format. Follow those instructions to write the script.
 
-- **Alex (Speaker A):** The curious one who introduces topics and asks insightful questions. Energetic and enthusiastic.
-- **Sam (Speaker B):** The analytical one who dives deeper, adds context, and offers opinions. Thoughtful and witty.
+If the user included custom instructions in their `/podcast` message (e.g., "make it a debate" or "hosts should eavesdrop on my conversation"), incorporate those. The user's inline instructions override PROMPT.md for that episode.
 
-**Style guidelines:**
-- Sound like two friends chatting, not news anchors reading teleprompters
-- Use contractions, incomplete sentences, and natural speech patterns
-- Include reactions: "Wait, really?", "That's wild", "Okay so here's the thing..."
-- Have genuine opinions - it's okay to be skeptical or excited about something
-- Avoid jargon dumps - if a technical concept comes up, explain it briefly and naturally
-- Each speaker turn should be 1-4 sentences (not long monologues)
-- Target approximately 1,500 words total (roughly 10 minutes of speech)
-
-**Structure:**
-1. **Opening** (~30 seconds): Alex opens with a brief, energetic teaser of what's coming. Sam jumps in with a quick reaction.
-2. **Main discussion** (~8 minutes): Go through the content. One host introduces a point conversationally, the other reacts, asks questions, or adds context. Use natural transitions between topics.
-3. **Closing** (~30 seconds): Quick wrap-up. Sam highlights the biggest takeaway. Alex signs off.
-
-**Output format:** A JSON array where each element has "speaker" (either "A" or "B") and "text":
-
-```json
-[
-  {"speaker": "A", "text": "Hey everyone, welcome back..."},
-  {"speaker": "B", "text": "Yeah, so today we've got some really interesting stuff..."}
-]
-```
-
-Save the script using the Write tool to: `~/.claude/personalized-podcast/scripts_output/YYYY-MM-DD.json` (use today's date). If a file for today already exists, append a number (e.g., `2026-04-05-2.json`).
+Save the script as a JSON array using the Write tool to: `~/.claude/personalized-podcast/scripts_output/YYYY-MM-DD.json` (use today's date). If a file for today already exists, append a number (e.g., `2026-04-05-2.json`).
 
 ### Step 3: Generate audio
 
@@ -126,7 +102,7 @@ After the audio plays, tell the user:
 
 > "Your podcast episode is ready! Here are some things you can customize:
 >
-> **Customize the script prompt:** The instructions that control how the hosts behave, the show format, and the writing style are all in `SKILL.md`. You can edit it to change the hosts' roles, the episode structure, the tone, or create entirely new formats (solo narrator, debate, interview, eavesdrop, etc.). See: https://github.com/zarazhangrui/personalized-podcast-skill/blob/main/SKILL.md
+> **Customize the script prompt:** The instructions that control how the hosts behave, the show format, and the writing style are all in [`PROMPT.md`](https://github.com/zarazhangrui/personalized-podcast-skill/blob/main/PROMPT.md). Edit it to change the hosts' roles, the episode structure, the tone, or create entirely new formats (solo narrator, debate, interview, eavesdrop, etc.).
 >
 > **Pick your own voices:** Browse voices at https://fish.audio/discovery, find two you like, copy their reference IDs, and update `~/.claude/personalized-podcast/config.yaml` under `host_a_voice_id` and `host_b_voice_id`.
 >
