@@ -177,7 +177,8 @@ Give the user their feed URL and instructions:
 
 | App | How to subscribe |
 |-----|-----------------|
-| Apple Podcasts | Menu bar: File > Follow a Show by URL |
+| Apple Podcasts (Mac) | Menu bar: File > Add a Show by URL |
+| Apple Podcasts (iPhone) | Library > Edit (top right) > Add a Show by URL |
 | Overcast | + button > Add URL |
 | Pocket Casts | Search > Submit RSS Feed |
 | Castro | Discover > Subscribe by URL |
