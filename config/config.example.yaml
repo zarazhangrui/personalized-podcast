@@ -20,7 +20,7 @@ tts:
   # Default voices — works out of the box. To pick your own, browse:
   # https://fish.audio/discovery
   # Find a voice you like, copy its reference ID, and paste it here.
-  host_a_voice_id: "bf322df2096a46f18c579d0baa36f41d"   # Adrian — conversational male
+  host_a_voice_id: "544c5489106842be8d63d6b619f6a125"   # Male — natural, conversational
   host_b_voice_id: "933563129e564b19a115bedd57b7406a"   # Sarah — warm, engaging female
 
 # --- RSS Feed (optional) ---
