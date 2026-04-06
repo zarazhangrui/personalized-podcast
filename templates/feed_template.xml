@@ -5,9 +5,15 @@
   <channel>
     <title>{{ show_name }}</title>
     <link>{{ base_url }}</link>
-    <description>Personalized podcasts for Zara</description>
+    <description>{{ description | default('A personalized AI-generated podcast.') }}</description>
     <language>{{ language }}</language>
     <atom:link href="{{ base_url }}/feed.xml" rel="self" type="application/rss+xml"/>
+    {% if owner_email %}
+    <itunes:owner>
+      <itunes:name>{{ show_name }}</itunes:name>
+      <itunes:email>{{ owner_email }}</itunes:email>
+    </itunes:owner>
+    {% endif %}
 
     <!-- Show artwork -->
     <image>
@@ -17,9 +23,9 @@
     </image>
     <itunes:image href="{{ base_url }}/cover-art.png"/>
 
-    <!-- iTunes/Podcast player metadata -->
+    <!-- Podcast player metadata -->
     <itunes:author>{{ show_name }}</itunes:author>
-    <itunes:summary>Personalized podcasts for Zara</itunes:summary>
+    <itunes:summary>{{ description | default('A personalized AI-generated podcast.') }}</itunes:summary>
     <itunes:category text="Technology"/>
     <itunes:explicit>false</itunes:explicit>
     <itunes:type>episodic</itunes:type>

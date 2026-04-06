@@ -186,7 +186,9 @@ def publish_episode(mp3_path, config, logger=None, episode_title=None, episode_d
             template = Template(f.read())
 
         feed_xml = template.render(
-            show_name=config.get("show_name", "My Daily Digest"),
+            show_name=config.get("show_name", "My Podcast"),
+            description=config.get("description", "A personalized AI-generated podcast."),
+            owner_email=config.get("owner_email", ""),
             base_url=base_url,
             language=config.get("language", "en"),
             episodes=episodes,

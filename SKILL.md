@@ -183,10 +183,18 @@ Give the user their feed URL and instructions:
 | Pocket Casts | Discover tab > paste URL in search bar > Subscribe |
 | Castro | Search tab > paste URL in search bar > Add Podcast |
 | Snipd | Home > Podcasts > three-dot menu (top right) > Add RSS |
+| Spotify | See Spotify instructions below |
 
 Feed URL: `https://USERNAME.github.io/podcast-feed/feed.xml`
 
-(Spotify doesn't support personal RSS feeds.)
+**Spotify setup (one-time, takes 24-48 hours for approval):**
+1. Go to [podcasters.spotify.com](https://podcasters.spotify.com) and sign in
+2. Click "Add existing podcast"
+3. Paste your feed URL
+4. Spotify sends a verification email to the address in your feed — click to verify
+5. Your show appears on Spotify within 24-48 hours
+
+Note: For Spotify, you need an `owner_email` set in your config.yaml. If it's not set, ask the user for their email and add it to the config.
 
 ### 5. Publish episodes
 

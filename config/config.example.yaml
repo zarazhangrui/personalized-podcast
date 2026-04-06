@@ -6,6 +6,8 @@
 
 # --- Show Settings ---
 show_name: "My Podcast"
+description: "A personalized AI-generated podcast."
+owner_email: ""                     # Required for Spotify — your email address
 hosts: 2
 length_minutes: 10
 tone: "casual and conversational"
