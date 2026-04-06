@@ -52,8 +52,8 @@ Tell the user:
 
 > "To turn your script into audio, this skill uses Fish Audio for text-to-speech. They have a free tier with 2 million+ voices. You just need an API key:
 >
-> 1. Go to fish.audio and create a free account
-> 2. Go to your profile/settings and copy your API key"
+> 1. Go to https://fish.audio and create a free account
+> 2. Go to https://fish.audio/app/api-keys/ and create an API key"
 
 Then create the .env file and open it:
 
