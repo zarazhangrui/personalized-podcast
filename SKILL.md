@@ -1,6 +1,6 @@
 ---
 name: podcast
-description: Generate a podcast episode from content you provide. Paste text, point to local files, or describe a topic — Claude writes a two-host conversation script, generates audio with Fish Audio TTS, and plays it for you.
+description: Generate a podcast episode from content you provide. Paste text, point to local files, or describe a topic - Claude writes a two-host conversation script, generates audio with Fish Audio TTS, and plays it for you.
 ---
 
 # Personalized Podcast
@@ -9,7 +9,7 @@ Turn any content into a podcast episode with two engaging hosts who discuss it i
 
 ## First-time setup
 
-If `~/.claude/personalized-podcast/config.yaml` does not exist, run through this setup BEFORE doing anything else. Do each step yourself — don't ask the user to run commands.
+If `~/.claude/personalized-podcast/config.yaml` does not exist, run through this setup BEFORE doing anything else. Do each step yourself - don't ask the user to run commands.
 
 ### Step 1: Install dependencies
 
@@ -79,8 +79,8 @@ Write a podcast script as a JSON array. The show has two hosts:
 - Sound like two friends chatting, not news anchors reading teleprompters
 - Use contractions, incomplete sentences, and natural speech patterns
 - Include reactions: "Wait, really?", "That's wild", "Okay so here's the thing..."
-- Have genuine opinions — it's okay to be skeptical or excited about something
-- Avoid jargon dumps — if a technical concept comes up, explain it briefly and naturally
+- Have genuine opinions - it's okay to be skeptical or excited about something
+- Avoid jargon dumps - if a technical concept comes up, explain it briefly and naturally
 - Each speaker turn should be 1-4 sentences (not long monologues)
 - Target approximately 1,500 words total (roughly 10 minutes of speech)
 
@@ -126,11 +126,13 @@ After the audio plays, tell the user:
 
 > "Your podcast episode is ready! Here are some things you can customize:
 >
-> **Pick your own voices:** Browse voices at https://fish.audio/discovery — find two you like, copy their reference IDs, and update `~/.claude/personalized-podcast/config.yaml` under `host_a_voice_id` and `host_b_voice_id`.
+> **Customize the script prompt:** The instructions that control how the hosts behave, the show format, and the writing style are all in `SKILL.md`. You can edit it to change the hosts' roles, the episode structure, the tone, or create entirely new formats (solo narrator, debate, interview, eavesdrop, etc.). See: https://github.com/zarazhangrui/personalized-podcast-skill/blob/main/SKILL.md
+>
+> **Pick your own voices:** Browse voices at https://fish.audio/discovery, find two you like, copy their reference IDs, and update `~/.claude/personalized-podcast/config.yaml` under `host_a_voice_id` and `host_b_voice_id`.
 >
 > **Customize the show:** Edit the `show_name` and `tone` in your config file to change the podcast's personality.
 >
-> **Set up an RSS feed:** Want episodes delivered to your podcast app automatically? I can set up a personal RSS feed for you — just ask!"
+> **Set up an RSS feed:** Want episodes delivered to your podcast app (Apple Podcasts, Spotify, Overcast, Snipd, etc.) automatically? I can set up a personal RSS feed for you. Just ask!"
 
 Only show these tips the FIRST time, or if the user asks about customization.
 
@@ -189,14 +191,14 @@ Feed URL: `https://USERNAME.github.io/podcast-feed/feed.xml`
 
 **Spotify setup (one-time, takes 24-48 hours for approval):**
 
-IMPORTANT: Before proceeding, warn the user: "Heads up — submitting to Spotify makes your podcast **public**. Anyone on Spotify can find and listen to it. The other apps above (Apple Podcasts, Overcast, etc.) are private — only people you share the RSS URL with can find your show. Want to proceed with Spotify?"
+IMPORTANT: Before proceeding, warn the user: "Heads up - submitting to Spotify makes your podcast **public**. Anyone on Spotify can find and listen to it. The other apps above (Apple Podcasts, Overcast, etc.) are private - only people you share the RSS URL with can find your show. Want to proceed with Spotify?"
 
 If they want to proceed:
 1. Make sure `owner_email` is set in config.yaml. If not, ask for their email and add it.
 2. Go to [podcasters.spotify.com](https://podcasters.spotify.com) and sign in
 3. Click "Add existing podcast"
 4. Paste your feed URL
-5. Spotify sends a verification email — click to verify
+5. Spotify sends a verification email - click to verify
 6. Your show appears on Spotify within 24-48 hours
 
 ### 5. Publish episodes
@@ -209,7 +211,7 @@ After the RSS feed is set up, future episodes can be published with:
 
 ## Troubleshooting
 
-- **"API key not found"** — Check ~/.claude/personalized-podcast/.env has a valid FISH_API_KEY
-- **"ffmpeg not installed"** — Run: `brew install ffmpeg` (macOS) or `sudo apt install ffmpeg` (Linux)
-- **"gh not authenticated"** — Run: `gh auth login`
-- **TTS quota exceeded** — Fish Audio free tier has monthly limits. Wait for reset or upgrade your plan.
+- **"API key not found"** - Check ~/.claude/personalized-podcast/.env has a valid FISH_API_KEY
+- **"ffmpeg not installed"** - Run: `brew install ffmpeg` (macOS) or `sudo apt install ffmpeg` (Linux)
+- **"gh not authenticated"** - Run: `gh auth login`
+- **TTS quota exceeded** - Fish Audio free tier has monthly limits. Wait for reset or upgrade your plan.
