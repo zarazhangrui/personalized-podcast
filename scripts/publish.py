@@ -162,7 +162,9 @@ def publish_episode(mp3_path, config, logger=None, episode_title=None, episode_d
         episodes.append(episode)
 
         # Sort by date (newest first for the RSS feed)
-        episodes.sort(key=lambda e: e["pub_date"], reverse=True)
+        # Parse RFC 2822 dates properly for sorting (string sort doesn't work)
+        from email.utils import parsedate_to_datetime
+        episodes.sort(key=lambda e: parsedate_to_datetime(e["pub_date"]), reverse=True)
 
         # Enforce retention limit — delete oldest episodes if we're over the limit
         max_episodes = config.get("retention", {}).get("max_episodes", 30)

@@ -1,26 +1,45 @@
 # Personalized Podcast
 
-A Claude Code skill that turns any content into a podcast episode. Give it text, point it at files, or describe a topic — it writes a two-host conversation script, generates audio with Fish Audio TTS, and publishes to your personal RSS feed. Subscribe once in your podcast app and new episodes show up automatically.
+A Claude Code skill that turns any content into a podcast episode. Give it text, point it at files, or describe a topic — it writes a two-host conversation script, generates audio, and plays it for you.
 
-## How it works
+## Demo
 
 ```
-You: /podcast read ~/Downloads/article.txt
-          |
-          v
-    Claude reads the content
-          |
-          v
-    Writes a script (two hosts riffing back and forth)
-          |
-          v
-    Fish Audio turns each line into speech
-          |
-          v
-    Stitches audio + publishes to GitHub Pages
-          |
-          v
-    Episode appears in your podcast app
+You: /podcast Here's an article about AI coding assistants getting really good...
+
+Claude: [reads content, writes script, generates audio]
+        Playing your episode now! (7:11, two hosts discussing AI coding)
+```
+
+## Quick start
+
+### 1. Install the skill
+
+```bash
+gh repo clone zarazhangrui/personalized-podcast-skill ~/.claude/skills/personalized-podcast
+```
+
+### 2. Use it
+
+```
+/podcast <paste content, point to files, or describe a topic>
+```
+
+That's it. On first run, Claude will automatically set up the Python environment, install dependencies, and ask you for a free [Fish Audio](https://fish.audio) API key. Default voices are pre-configured — your first episode generates immediately.
+
+## What it does
+
+```
+/podcast <your content>
+        |
+        v
+  Claude writes a script (two hosts riffing back and forth)
+        |
+        v
+  Fish Audio turns each line into speech
+        |
+        v
+  Audio file opens and plays on your computer
 ```
 
 The show has two AI hosts:
@@ -29,140 +48,47 @@ The show has two AI hosts:
 
 They sound like two friends chatting over coffee, not news anchors reading teleprompters.
 
-## Quick start
+## Customize
 
-### 1. Install the skill
+**Pick your own voices:** Browse [fish.audio/discovery](https://fish.audio/discovery/), find voices you like, and update `~/.claude/personalized-podcast/config.yaml` with the reference IDs.
 
-Clone into your Claude Code skills directory:
+**Change the show's personality:** Edit `show_name` and `tone` in your config file.
 
-```bash
-gh repo clone zarazhangrui/personalized-podcast-skill ~/.claude/skills/personalized-podcast
-```
+**Set up an RSS feed:** Want episodes delivered to your podcast app? Ask Claude: "Set up an RSS feed for my podcast." It will create a GitHub Pages feed you can subscribe to in Apple Podcasts, Overcast, Pocket Casts, Snipd, or any podcast app.
 
-### 2. Set up Python environment
+## Requirements
 
-```bash
-python3 -m venv ~/.claude/personalized-podcast/venv
-~/.claude/personalized-podcast/venv/bin/pip install fish-audio-sdk pydub pyyaml python-dotenv jinja2 audioop-lts
-```
+- [Claude Code](https://claude.ai/code) (CLI, desktop app, or IDE extension)
+- Python 3.10+
+- ffmpeg (`brew install ffmpeg` on macOS)
+- [Fish Audio](https://fish.audio) account (free tier available)
 
-You also need ffmpeg for audio processing:
-
-```bash
-brew install ffmpeg    # macOS
-sudo apt install ffmpeg # Ubuntu
-```
-
-### 3. Get a Fish Audio API key
-
-1. Create an account at [fish.audio](https://fish.audio)
-2. Go to your profile/settings and copy your API key
-3. Save it:
-
-```bash
-echo "FISH_API_KEY=your_key_here" > ~/.claude/personalized-podcast/.env
-```
-
-### 4. Pick voices
-
-Browse [fish.audio/discovery](https://fish.audio/discovery/) and find two voices you like — one for each host. Copy their reference IDs.
-
-### 5. Configure
-
-```bash
-cp ~/.claude/skills/personalized-podcast/config/config.example.yaml ~/.claude/personalized-podcast/config.yaml
-```
-
-Edit `~/.claude/personalized-podcast/config.yaml` and fill in:
-- `show_name` — whatever you want your podcast called
-- `host_a_voice_id` and `host_b_voice_id` — the Fish Audio reference IDs you picked
-- `github_repo` — where your feed will be hosted (e.g., `yourusername/my-podcast-feed`)
-- `github_pages_url` — the corresponding GitHub Pages URL
-
-### 6. Create the feed repo
-
-```bash
-~/.claude/personalized-podcast/venv/bin/python ~/.claude/skills/personalized-podcast/scripts/bootstrap.py \
-  --config-json '{"show_name": "Your Show Name", "github_repo": "yourusername/my-podcast-feed"}'
-```
-
-This creates a private GitHub repo with GitHub Pages enabled.
-
-### 7. Subscribe
-
-Add your feed URL to any podcast app:
-
-| App | How to subscribe |
-|-----|-----------------|
-| Apple Podcasts | Library > menu (three dots) > Follow a Show by URL |
-| Overcast | + button > Add URL |
-| Pocket Casts | Search > Submit RSS Feed |
-| Castro | Discover > Subscribe by URL |
-| Snipd | Library > Add Podcast > Add by RSS Feed |
-
-Your feed URL is: `https://yourusername.github.io/my-podcast-feed/feed.xml`
-
-(Spotify doesn't support personal RSS feeds.)
-
-## Usage
-
-In Claude Code, just type:
-
-```
-/podcast Here's an article about...
-```
-
-or:
-
-```
-/podcast read ~/Downloads/newsletter.txt
-```
-
-or point to multiple files:
-
-```
-/podcast read ~/notes/meeting.txt and ~/notes/research.md
-```
-
-Claude reads the content, writes a script, asks you for an episode title, generates the audio, and publishes it to your feed.
-
-## Architecture
+## How it works under the hood
 
 ```
 ~/.claude/skills/personalized-podcast/     # The skill (this repo)
-  SKILL.md                                  # Skill instructions for Claude
+  SKILL.md                                  # Instructions for Claude
   scripts/
     speak.py                                # Fish Audio TTS + audio stitching
-    publish.py                              # Push episodes to GitHub Pages
-    bootstrap.py                            # One-time repo setup
-    utils.py                                # Config loading, logging, etc.
+    publish.py                              # Push episodes to GitHub Pages (optional)
+    bootstrap.py                            # One-time repo setup (optional)
+    utils.py                                # Config, logging, .env loading
   templates/
-    feed_template.xml                       # RSS feed Jinja template
+    feed_template.xml                       # RSS feed template (optional)
   config/
-    config.example.yaml                     # Example config to copy
+    config.example.yaml                     # Default config with pre-picked voices
 
-~/.claude/personalized-podcast/            # Your data (not in this repo)
+~/.claude/personalized-podcast/            # Your data (created automatically)
   config.yaml                               # Your config
   .env                                      # Your Fish Audio API key
   scripts_output/                           # Generated scripts (JSON)
   episodes/                                 # Generated MP3 files
-  logs/                                     # Pipeline logs
 ```
 
-## Tech stack
+**Script generation:** Claude writes the script directly — no separate LLM API call needed.
 
-- **Script generation:** Claude itself (no separate LLM API call needed)
-- **Text-to-speech:** [Fish Audio](https://fish.audio) — 2M+ voices, simple SDK
-- **Audio processing:** pydub + ffmpeg
-- **Feed hosting:** GitHub Pages (private repo, public URL)
-- **Feed format:** RSS 2.0 with iTunes podcast extensions
+**Text-to-speech:** [Fish Audio](https://fish.audio) — 2M+ voices, free tier, simple SDK.
 
-## Troubleshooting
+**Audio processing:** pydub + ffmpeg for stitching and fade effects.
 
-| Error | Fix |
-|-------|-----|
-| "API key not found" | Check `~/.claude/personalized-podcast/.env` has a valid `FISH_API_KEY` |
-| "No voice ID set" | Browse fish.audio/discovery, pick voices, add IDs to config.yaml |
-| "ffmpeg not installed" | `brew install ffmpeg` |
-| "gh not authenticated" | `gh auth login` |
-| TTS quota exceeded | Fish Audio free tier has limits. Wait for reset or upgrade your plan |
+**Feed hosting (optional):** GitHub Pages with auto-deploy on push.

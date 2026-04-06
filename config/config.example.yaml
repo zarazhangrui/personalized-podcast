@@ -1,12 +1,11 @@
 # =============================================================================
 # Personalized Podcast — Configuration
 # =============================================================================
-# Copy this file to ~/.claude/personalized-podcast/config.yaml and customize.
 # API keys go in ~/.claude/personalized-podcast/.env (NOT here).
 # =============================================================================
 
 # --- Show Settings ---
-show_name: "My Daily Digest"
+show_name: "My Podcast"
 hosts: 2
 length_minutes: 10
 tone: "casual and conversational"
@@ -14,17 +13,22 @@ language: "en"
 
 # --- Text-to-Speech Settings ---
 # Fish Audio turns the script into audio.
-# Get your API key at fish.audio, then paste it in .env as FISH_API_KEY
+# Get your free API key at fish.audio, then paste it in .env as FISH_API_KEY
 tts:
   provider: "fishaudio"
   api_key_env: "FISH_API_KEY"
-  host_a_voice_id: ""   # Browse fish.audio/discovery to find a voice, copy its reference ID
-  host_b_voice_id: ""   # Pick one male + one female for contrast
+  # Default voices — works out of the box. To pick your own, browse:
+  # https://fish.audio/discovery
+  # Find a voice you like, copy its reference ID, and paste it here.
+  host_a_voice_id: "bf322df2096a46f18c579d0baa36f41d"   # Adrian — conversational male
+  host_b_voice_id: "933563129e564b19a115bedd57b7406a"   # Sarah — warm, engaging female
 
-# --- Publishing Settings ---
-publish:
-  github_repo: "username/my-podcast-feed"
-  github_pages_url: "https://username.github.io/my-podcast-feed"
+# --- RSS Feed (optional) ---
+# Set these up if you want episodes published to a podcast feed.
+# Leave empty to skip — episodes will just be saved as local MP3 files.
+# publish:
+#   github_repo: "yourusername/podcast-feed"
+#   base_url: "https://yourusername.github.io/podcast-feed"
 
 # --- Retention ---
 retention:
