@@ -4,11 +4,11 @@
 
 The script. The prompt. The hosts' roles. Their voices. The content they discuss. All of it.
 
-This is a [Claude Code](https://claude.ai/code) skill that turns any content into a two-host podcast episode. Paste in text, point it at files, drop a URL. Two AI hosts read your content and have a natural conversation about it. You get an MP3 that plays immediately.
+A coding agent skill that turns any content into a two-host podcast episode. Paste in text, point it at files, drop a URL. Two AI hosts read your content and have a natural conversation about it. You get an MP3 that plays immediately. Set up an RSS feed and listen in the apps you already use: Apple Podcasts, Spotify, Overcast, Snipd, Pocket Casts. No new app to download.
 
 ## Why this exists
 
-**Turn anything into a podcast you can listen to on the go.** Newsletters, long reads, tweets, research papers, meeting notes. Instead of staring at a screen, you listen to two people break it down while you walk, commute, or cook.
+**Turn anything into a podcast you can listen to on the go.** Newsletters, long reads, tweets, research papers, meeting notes. Instead of reading on a screen, you listen to two people break it down while you walk, commute, or cook. Set up the RSS feed once and new episodes show up right where you already listen to podcasts.
 
 **Know yourself from the outside.** This is the unexpected use case. Feed it personal content: your resume, meeting transcripts, journal entries, even your browser history. Then ask the hosts to comment on their impressions of you. What patterns do they see in how you think, communicate, make decisions? It is genuinely illuminating to hear two voices discuss you as if you're not in the room.
 
@@ -87,22 +87,22 @@ They sound like two friends talking over coffee. Not news anchors. Not a lecture
 
 ## Requirements
 
-- [Claude Code](https://claude.ai/code) (CLI, desktop app, or IDE extension)
+- A coding agent that supports skills (e.g. Claude Code, Gemini CLI, Copilot CLI)
 - Python 3.10+
 - ffmpeg (`brew install ffmpeg` on macOS)
 - [Fish Audio](https://fish.audio) account (free tier available)
 
 ## About
 
-Built by [Zara Zhang](https://x.com/zarazhangrui). This skill was created as part of exploring how AI can make information consumption more personal and flexible. The idea: your AI assistant already understands context, writes well, and follows instructions. Why not have it write you a podcast script, generate the audio, and deliver it to your ears?
+Built by [Zara Zhang](https://x.com/zarazhangrui). Your AI coding agent already understands context, writes well, and follows instructions. Why not have it write you a podcast script, generate the audio, and deliver it to your ears?
 
-The entire pipeline runs locally through Claude Code. No separate backend. No hosted service. No subscription. Just a skill that turns your coding agent into a podcast producer.
+The entire pipeline runs locally through your coding agent. No separate backend. No hosted service. No subscription. Just a skill that turns your coding agent into a podcast producer.
 
 ## Under the hood
 
 ```
 ~/.claude/skills/personalized-podcast/     # The skill (this repo)
-  SKILL.md                                  # Instructions for Claude
+  SKILL.md                                  # Instructions for the coding agent
   scripts/
     speak.py                                # Fish Audio TTS + audio stitching
     publish.py                              # Push episodes to GitHub Pages (optional)
@@ -120,7 +120,7 @@ The entire pipeline runs locally through Claude Code. No separate backend. No ho
   episodes/                                 # Generated MP3 files
 ```
 
-**Script generation:** Claude writes the script directly. No separate LLM API call needed.
+**Script generation:** Your coding agent writes the script directly. No separate LLM API call needed.
 
 **Text-to-speech:** [Fish Audio](https://fish.audio) with 2M+ voices and a free tier.
 
