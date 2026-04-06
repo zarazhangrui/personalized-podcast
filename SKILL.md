@@ -1,24 +1,34 @@
 ---
 name: podcast
-description: Generate a podcast episode from content you provide. Paste text, point to local files, or describe a topic - Claude writes a two-host conversation script, generates audio with Fish Audio TTS, and plays it for you.
+description: Generate a podcast episode from content you provide. Paste text, point to local files, or describe a topic. Two AI hosts discuss it in a natural conversation. Listen locally or in your favorite podcast app via RSS.
 ---
 
 # Personalized Podcast
 
-Turn any content into a podcast episode with two engaging hosts who discuss it in a casual, conversational style.
+When the user invokes this skill, start by introducing it:
+
+> "This skill turns any content into a podcast episode with two AI hosts who discuss it in a natural, conversational style. Think NotebookLM, but you control everything: the script prompt, the hosts' voices, the show format.
+>
+> You can use it to:
+> - **Listen to anything on the go.** Paste an article, point to a file, drop a URL. Instead of reading, you get two people breaking it down while you walk, commute, or cook.
+> - **Understand yourself from the outside.** Feed it personal content like meeting transcripts, your resume, or journal entries, and have the hosts share their impressions of you. It's genuinely illuminating.
+> - **Create your own show.** Set up an RSS feed and new episodes show up in the podcast app you already use (Apple Podcasts, Spotify, Overcast, Snipd). No new app to download.
+>
+> Let's get started. What content do you want to turn into a podcast?"
+
+If the user already provided content with their `/podcast` command, skip the question and go straight to setup check.
+
+---
 
 ## First-time setup
 
-If `~/.claude/personalized-podcast/config.yaml` does not exist, run through this setup BEFORE doing anything else. Do each step yourself - don't ask the user to run commands.
+If `~/.claude/personalized-podcast/config.yaml` does not exist, run through this setup BEFORE generating. Do each step yourself - don't ask the user to run commands.
 
 ### Step 1: Install dependencies
 
 ```bash
-# Create data directory and venv
 mkdir -p ~/.claude/personalized-podcast/{scripts_output,episodes,logs}
 python3 -m venv ~/.claude/personalized-podcast/venv
-
-# Install Python packages
 ~/.claude/personalized-podcast/venv/bin/pip install fish-audio-sdk pydub pyyaml python-dotenv jinja2 audioop-lts
 ```
 
@@ -38,12 +48,14 @@ The config comes with two pre-picked voices that work out of the box. No voice s
 
 ### Step 3: Get Fish Audio API key
 
-Ask the user: "To generate audio, you'll need a free Fish Audio API key. Here's how to get one:"
+Tell the user:
 
-1. Go to fish.audio and create an account (free)
-2. Go to your profile/settings and copy your API key
+> "To turn your script into audio, this skill uses Fish Audio for text-to-speech. They have a free tier with 2 million+ voices. You just need an API key:
+>
+> 1. Go to fish.audio and create a free account
+> 2. Go to your profile/settings and copy your API key"
 
-Then create the .env file and open it for them:
+Then create the .env file and open it:
 
 ```bash
 echo "FISH_API_KEY=your_key_here" > ~/.claude/personalized-podcast/.env
@@ -56,9 +68,11 @@ IMPORTANT: Never ask the user to paste API keys in the chat. Always use the .env
 
 ### Step 4: Done
 
-Tell the user: "Setup complete! Type /podcast followed by any content to generate your first episode."
+Tell the user:
 
-Do NOT set up RSS or GitHub Pages during first-time setup. That's optional and comes later.
+> "You're all set! The default show has two hosts - Alex (curious, energetic) and Sam (analytical, witty) - with voices pre-configured. Let's generate your first episode."
+
+Then proceed to generate the episode. Do NOT set up RSS or GitHub Pages during first-time setup. That's optional and comes later.
 
 ---
 
@@ -77,6 +91,8 @@ If the user included custom instructions in their `/podcast` message (e.g., "mak
 Save the script as a JSON array using the Write tool to: `~/.claude/personalized-podcast/scripts_output/YYYY-MM-DD.json` (use today's date). If a file for today already exists, append a number (e.g., `2026-04-05-2.json`).
 
 ### Step 3: Generate audio
+
+Tell the user: "Script written. Now generating audio - this takes about a minute depending on episode length."
 
 Run the speak script:
 
@@ -100,47 +116,50 @@ On Linux use `xdg-open` instead of `open`.
 
 After the audio plays, tell the user:
 
-> "Your podcast episode is ready! Here are some things you can customize:
+> "Your episode is ready! A few things you can do from here:
 >
-> **Customize the script prompt:** The default show is two hosts having a casual conversation, but you can change it to anything. Edit `PROMPT.md` to create your own format. Some ideas:
-> - **Debate** - two hosts take opposing sides and challenge each other
-> - **Eavesdrop** - two hosts discuss a person (from transcripts or personal content) as if they're not in the room, sharing observations about personality and communication patterns
-> - **Interview** - one host interviews the other as an expert on the topic
-> - **Solo narrator** - one voice walks through the content as a monologue
-> - **News roundup** - hosts go through a list of items one by one, reading each aloud then discussing
+> **Try different show formats.** The default is two hosts chatting, but you can do anything. Just describe it when you run `/podcast`:
+> - "/podcast make it a debate about this article"
+> - "/podcast hosts should eavesdrop on my conversation and share their impressions of me"
+> - "/podcast interview format, one host asks questions and the other is the expert"
+> - "/podcast solo narrator, walk me through this research paper"
+> - "/podcast news roundup, read each tweet aloud then discuss"
 >
-> Or just describe the format you want inline when you run `/podcast` (e.g., "/podcast make it a debate about this article") and I'll follow your instructions for that episode.
+> Or edit `PROMPT.md` to permanently change your show's format.
 >
-> **Pick your own voices:** Browse voices at https://fish.audio/discovery, find two you like, copy their reference IDs, and update `~/.claude/personalized-podcast/config.yaml` under `host_a_voice_id` and `host_b_voice_id`.
+> **Pick your own voices.** The default voices are solid, but Fish Audio has 2 million+ to choose from. Browse https://fish.audio/discovery, find two you like, and update the voice IDs in `~/.claude/personalized-podcast/config.yaml`.
 >
-> **Customize the show:** Edit the `show_name` and `tone` in your config file to change the podcast's personality.
->
-> **Set up an RSS feed:** Want episodes delivered to your podcast app (Apple Podcasts, Spotify, Overcast, Snipd, etc.) automatically? I can set up a personal RSS feed for you. Just ask!"
+> **Listen in your podcast app.** Want new episodes delivered to Apple Podcasts, Spotify, Overcast, or Snipd automatically? Just ask me to set up an RSS feed for you - takes about a minute."
 
 Only show these tips the FIRST time, or if the user asks about customization.
 
+---
+
 ## RSS feed setup (only when user asks)
 
-When the user wants to set up an RSS feed, walk them through these steps:
+When the user wants to set up an RSS feed, explain why it's useful:
+
+> "This creates a personal podcast feed that works in any podcast app. Once it's set up, every time you generate a new episode, it gets published to the feed and shows up where you already listen to podcasts. No new app needed."
+
+Then walk them through these steps:
 
 ### 1. Create a public GitHub repo
+
+Ask for their GitHub username, then:
 
 ```bash
 gh repo create USERNAME/podcast-feed --public --description "Personal podcast feed"
 ```
 
-Replace USERNAME with their GitHub username.
-
 ### 2. Enable GitHub Pages
 
 ```bash
-# Clone, add initial files, push
 cd /tmp && mkdir podcast-feed && cd podcast-feed && git init
 echo '[]' > episodes.json
-# Generate an initial empty feed.xml using the template
 ```
 
-Then enable GitHub Pages:
+Generate an initial empty feed.xml using the template, then push and enable GitHub Pages:
+
 ```bash
 gh api repos/USERNAME/podcast-feed/pages -X POST --input - << 'EOF'
 {"source":{"branch":"main","path":"/"},"build_type":"legacy"}
@@ -158,7 +177,7 @@ publish:
 
 ### 4. Subscribe in a podcast app
 
-Give the user their feed URL and instructions:
+Tell the user their feed URL and give them the steps for their preferred app:
 
 | App | How to subscribe |
 |-----|-----------------|
@@ -174,15 +193,15 @@ Feed URL: `https://USERNAME.github.io/podcast-feed/feed.xml`
 
 **Spotify setup (one-time, takes 24-48 hours for approval):**
 
-IMPORTANT: Before proceeding, warn the user: "Heads up - submitting to Spotify makes your podcast **public**. Anyone on Spotify can find and listen to it. The other apps above (Apple Podcasts, Overcast, etc.) are private - only people you share the RSS URL with can find your show. Want to proceed with Spotify?"
+IMPORTANT: Before proceeding, warn the user: "Heads up - submitting to Spotify makes your podcast **public**. Anyone on Spotify can find and listen to it. The other apps above are private - only people you share the RSS URL with can find your show. Want to proceed with Spotify?"
 
 If they want to proceed:
 1. Make sure `owner_email` is set in config.yaml. If not, ask for their email and add it.
 2. Go to [podcasters.spotify.com](https://podcasters.spotify.com) and sign in
 3. Click "Add existing podcast"
-4. Paste your feed URL
+4. Paste the feed URL
 5. Spotify sends a verification email - click to verify
-6. Your show appears on Spotify within 24-48 hours
+6. The show appears on Spotify within 24-48 hours
 
 ### 5. Publish episodes
 
@@ -191,6 +210,8 @@ After the RSS feed is set up, future episodes can be published with:
 ```bash
 ~/.claude/personalized-podcast/venv/bin/python ~/.claude/skills/personalized-podcast/scripts/publish.py --mp3 <path_to_mp3> --title "<title>" --description "<description>"
 ```
+
+---
 
 ## Troubleshooting
 
