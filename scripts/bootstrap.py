@@ -131,13 +131,10 @@ def main():
     if not env_path.exists():
         env_content = textwrap.dedent("""\
             # Personalized Podcast API Keys
-            # Paste your API keys below (replace the placeholder text)
+            # Paste your API key below (replace the placeholder text)
 
-            # Get your Anthropic API key from: https://console.anthropic.com/settings/keys
-            ANTHROPIC_API_KEY=paste-your-anthropic-key-here
-
-            # Get your ElevenLabs API key from: https://elevenlabs.io/app/settings/api-keys
-            ELEVENLABS_API_KEY=paste-your-elevenlabs-key-here
+            # Get your Fish Audio API key from: https://fish.audio (profile/settings)
+            FISH_API_KEY=paste-your-fish-audio-key-here
         """)
         with open(env_path, "w") as f:
             f.write(env_content)

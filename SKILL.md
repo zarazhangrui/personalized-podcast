@@ -10,6 +10,7 @@ When the user invokes this skill, start by introducing it:
 > "This skill turns any content into a podcast episode with two AI hosts who discuss it in a natural, conversational style. Think NotebookLM, but you control everything: the script prompt, the hosts' voices, the show format.
 >
 > You can use it to:
+>
 > - **Listen to anything on the go.** Paste an article, point to a file, drop a URL. Instead of reading, you get two people breaking it down while you walk, commute, or cook.
 > - **Understand yourself from the outside.** Feed it personal content like meeting transcripts, your resume, or journal entries, and have the hosts share their impressions of you. It's genuinely illuminating.
 > - **Create your own show.** Set up an RSS feed and new episodes show up in the podcast app you already use (Apple Podcasts, Spotify, Overcast, Snipd). No new app to download.
@@ -29,13 +30,15 @@ If `~/.claude/personalized-podcast/config.yaml` does not exist, run through this
 ```bash
 mkdir -p ~/.claude/personalized-podcast/{scripts_output,episodes,logs}
 python3 -m venv ~/.claude/personalized-podcast/venv
-~/.claude/personalized-podcast/venv/bin/pip install fish-audio-sdk pydub pyyaml python-dotenv jinja2 audioop-lts
+~/.claude/personalized-podcast/venv/bin/pip install httpx pydub pyyaml python-dotenv jinja2 audioop-lts
 ```
 
 Check ffmpeg is installed:
+
 ```bash
 ffmpeg -version
 ```
+
 If not found, install it: `brew install ffmpeg` (macOS) or `sudo apt install ffmpeg` (Linux).
 
 ### Step 2: Create config with default voices
@@ -119,6 +122,7 @@ After the audio plays, tell the user:
 > "Your episode is ready! A few things you can do from here:
 >
 > **Try different show formats.** The default is two hosts chatting, but you can do anything. Just describe it when you run `/podcast`:
+>
 > - "/podcast make it a debate about this article"
 > - "/podcast hosts should eavesdrop on my conversation and share their impressions of me"
 > - "/podcast interview format, one host asks questions and the other is the expert"
@@ -169,6 +173,7 @@ EOF
 ### 3. Update config
 
 Update `~/.claude/personalized-podcast/config.yaml` with:
+
 ```yaml
 publish:
   github_repo: "USERNAME/podcast-feed"
@@ -179,15 +184,15 @@ publish:
 
 Tell the user their feed URL and give them the steps for their preferred app:
 
-| App | How to subscribe |
-|-----|-----------------|
-| Apple Podcasts (Mac) | Menu bar: File > Add a Show by URL |
-| Apple Podcasts (iPhone) | Library > Edit (top right) > Add a Show by URL |
-| Overcast | "+" (top right) > Add URL |
-| Pocket Casts | Discover tab > paste URL in search bar > Subscribe |
-| Castro | Search tab > paste URL in search bar > Add Podcast |
-| Snipd | Home > Podcasts > three-dot menu (top right) > Add RSS |
-| Spotify | See Spotify instructions below |
+| App                     | How to subscribe                                       |
+| ----------------------- | ------------------------------------------------------ |
+| Apple Podcasts (Mac)    | Menu bar: File > Add a Show by URL                     |
+| Apple Podcasts (iPhone) | Library > Edit (top right) > Add a Show by URL         |
+| Overcast                | "+" (top right) > Add URL                              |
+| Pocket Casts            | Discover tab > paste URL in search bar > Subscribe     |
+| Castro                  | Search tab > paste URL in search bar > Add Podcast     |
+| Snipd                   | Home > Podcasts > three-dot menu (top right) > Add RSS |
+| Spotify                 | See Spotify instructions below                         |
 
 Feed URL: `https://USERNAME.github.io/podcast-feed/feed.xml`
 
@@ -196,6 +201,7 @@ Feed URL: `https://USERNAME.github.io/podcast-feed/feed.xml`
 IMPORTANT: Before proceeding, warn the user: "Heads up - submitting to Spotify makes your podcast **public**. Anyone on Spotify can find and listen to it. The other apps above are private - only people you share the RSS URL with can find your show. Want to proceed with Spotify?"
 
 If they want to proceed:
+
 1. Make sure `owner_email` is set in config.yaml. If not, ask for their email and add it.
 2. Go to [podcasters.spotify.com](https://podcasters.spotify.com) and sign in
 3. Click "Add existing podcast"

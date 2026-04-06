@@ -1,7 +1,4 @@
-feedparser>=6.0
-anthropic>=0.40.0
-openai>=1.50.0
-elevenlabs>=1.0.0
+httpx>=0.27.0
 pydub>=0.25.1
 audioop-lts>=0.2.1
 PyYAML>=6.0

@@ -19,9 +19,14 @@ import tempfile
 from datetime import datetime
 from pathlib import Path
 
+import httpx
+
 # Allow importing utils from the same directory
 sys.path.insert(0, str(Path(__file__).parent))
 from utils import get_data_dir, load_config, load_env, setup_logging
+
+# Fish Audio REST API endpoint
+FISH_AUDIO_TTS_URL = "https://api.fish.audio/v1/tts"
 
 
 def check_ffmpeg():
@@ -105,49 +110,87 @@ def generate_audio(script_segments, config, logger=None):
                 f"reference ID to config.yaml under tts.host_{speaker.lower()}_voice_id"
             )
 
-    # Initialize Fish Audio client
-    from fishaudio import FishAudio
-    from fishaudio.utils import save as fish_save
-    client = FishAudio(api_key=api_key)
-
-    # Step 2: Generate audio for each segment
+    # Step 2: Generate audio for each segment using the Fish Audio REST API
+    # NOTE: The `fishaudio` pip package is for LOCAL GPU inference, not the hosted API.
+    # We call the REST API directly with httpx instead.
     logger.info(f"Generating TTS for {len(script_segments)} segments...")
     audio_chunks = []
 
     with tempfile.TemporaryDirectory() as tmp_dir:
-        for i, segment in enumerate(script_segments):
-            speaker = segment["speaker"]
-            text = segment["text"]
-            voice_id = voice_map.get(speaker, voice_map["A"])
+        # Persistent HTTP client — reuses connections and has generous timeout for TTS
+        with httpx.Client(timeout=120.0) as client:
+            for i, segment in enumerate(script_segments):
+                speaker = segment["speaker"]
+                text = segment["text"]
+                voice_id = voice_map.get(speaker, voice_map["A"])
 
-            speaker_name = "Alex" if speaker == "A" else "Sam"
-            preview = text[:60] + "..." if len(text) > 60 else text
-            logger.info(f"  Segment {i+1}/{len(script_segments)} ({speaker_name}): {preview}")
+                speaker_name = "Alex" if speaker == "A" else "Sam"
+                preview = text[:60] + "..." if len(text) > 60 else text
+                logger.info(f"  Segment {i+1}/{len(script_segments)} ({speaker_name}): {preview}")
 
-            try:
-                # Call Fish Audio API — returns audio data
-                audio = client.tts.convert(
-                    text=text,
-                    reference_id=voice_id,
-                )
-
-                # Save the audio chunk to a temp file
-                chunk_path = Path(tmp_dir) / f"chunk_{i:04d}.mp3"
-                fish_save(audio, str(chunk_path))
-                audio_chunks.append(chunk_path)
-
-            except Exception as e:
-                logger.error(f"  TTS failed for segment {i+1}: {e}")
-                if "quota" in str(e).lower() or "limit" in str(e).lower():
-                    logger.warning(
-                        f"  Quota/limit issue — stitching {len(audio_chunks)} "
-                        f"of {len(script_segments)} segments into a partial episode."
+                try:
+                    # Call Fish Audio REST API (docs: https://docs.fish.audio/api-reference/tts)
+                    response = client.post(
+                        FISH_AUDIO_TTS_URL,
+                        headers={
+                            "Authorization": f"Bearer {api_key}",
+                            "Content-Type": "application/json",
+                        },
+                        json={
+                            "text": text,
+                            "reference_id": voice_id,
+                            "format": "mp3",
+                            "mp3_bitrate": 128,
+                        },
                     )
-                    break  # Stitch what we have instead of crashing
-                raise
+
+                    if response.status_code != 200:
+                        error_msg = response.text[:200]
+                        logger.error(f"  TTS API returned {response.status_code}: {error_msg}")
+
+                        if "quota" in error_msg.lower() or "limit" in error_msg.lower():
+                            logger.warning(
+                                f"  Quota/limit hit — stitching {len(audio_chunks)} "
+                                f"of {len(script_segments)} segments into a partial episode."
+                            )
+                            break
+
+                        if "reference not found" in error_msg.lower():
+                            raise RuntimeError(
+                                f"Voice ID '{voice_id}' not found on Fish Audio.\n"
+                                f"Browse https://fish.audio/discovery/ to find valid voices.\n"
+                                f"The reference ID is the last part of the URL: fish.audio/m/<id>"
+                            )
+                        continue
+
+                    # Save the audio chunk to a temp file
+                    chunk_path = Path(tmp_dir) / f"chunk_{i:04d}.mp3"
+                    chunk_path.write_bytes(response.content)
+                    audio_chunks.append(chunk_path)
+
+                except httpx.HTTPError as e:
+                    logger.error(f"  HTTP error for segment {i+1}: {e}")
+                    continue
+                except RuntimeError:
+                    raise  # Re-raise our own RuntimeErrors (e.g. voice not found)
+                except Exception as e:
+                    logger.error(f"  TTS failed for segment {i+1}: {e}")
+                    if "quota" in str(e).lower() or "limit" in str(e).lower():
+                        logger.warning(
+                            f"  Quota/limit issue — stitching {len(audio_chunks)} "
+                            f"of {len(script_segments)} segments into a partial episode."
+                        )
+                        break
+                    raise
 
         if not audio_chunks:
-            raise RuntimeError("No audio segments were generated. Check your Fish Audio API key and quota.")
+            raise RuntimeError(
+                "No audio segments were generated.\n\n"
+                "Common causes:\n"
+                "  1. Invalid API key — check FISH_API_KEY in ~/.claude/personalized-podcast/.env\n"
+                "  2. Invalid voice IDs — browse fish.audio/discovery and update config.yaml\n"
+                "  3. API quota exceeded — wait for reset or upgrade your Fish Audio plan"
+            )
 
         # Step 3: Stitch all chunks together
         logger.info("Stitching audio segments together...")
