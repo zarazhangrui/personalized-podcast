@@ -102,7 +102,14 @@ After the audio plays, tell the user:
 
 > "Your podcast episode is ready! Here are some things you can customize:
 >
-> **Customize the script prompt:** The instructions that control how the hosts behave, the show format, and the writing style are all in [`PROMPT.md`](https://github.com/zarazhangrui/personalized-podcast-skill/blob/main/PROMPT.md). Edit it to change the hosts' roles, the episode structure, the tone, or create entirely new formats (solo narrator, debate, interview, eavesdrop, etc.).
+> **Customize the script prompt:** The default show is two hosts having a casual conversation, but you can change it to anything. Edit `PROMPT.md` to create your own format. Some ideas:
+> - **Debate** - two hosts take opposing sides and challenge each other
+> - **Eavesdrop** - two hosts discuss a person (from transcripts or personal content) as if they're not in the room, sharing observations about personality and communication patterns
+> - **Interview** - one host interviews the other as an expert on the topic
+> - **Solo narrator** - one voice walks through the content as a monologue
+> - **News roundup** - hosts go through a list of items one by one, reading each aloud then discussing
+>
+> Or just describe the format you want inline when you run `/podcast` (e.g., "/podcast make it a debate about this article") and I'll follow your instructions for that episode.
 >
 > **Pick your own voices:** Browse voices at https://fish.audio/discovery, find two you like, copy their reference IDs, and update `~/.claude/personalized-podcast/config.yaml` under `host_a_voice_id` and `host_b_voice_id`.
 >
