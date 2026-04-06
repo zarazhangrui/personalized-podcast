@@ -77,7 +77,13 @@ They sound like two friends talking over coffee. Not news anchors. Not a lecture
 
 ## Make it yours
 
-**Customize the script prompt.** This is the big one. The instructions that control how the hosts behave, the show structure, and the writing style all live in [`PROMPT.md`](https://github.com/zarazhangrui/personalized-podcast-skill/blob/main/PROMPT.md). Edit it to change the hosts' roles, the episode format, the tone, or create entirely new formats: solo narrator, debate, interview, eavesdrop commentary, news roundup. The prompt is the soul of the show.
+**Customize the script prompt.** This is the big one. [`PROMPT.md`](https://github.com/zarazhangrui/personalized-podcast-skill/blob/main/PROMPT.md) controls how the hosts behave, the show structure, and the writing style. Edit it to create your own show format. Some ideas:
+
+- **Debate:** Two hosts take opposing sides. One is bullish, the other is skeptical. They challenge each other.
+- **Eavesdrop:** Two hosts discuss a person (from transcripts, writing, or personal content) as if that person isn't in the room. They share observations about personality and communication patterns.
+- **Interview:** One host interviews the other as an expert on the topic.
+- **Solo narrator:** One voice walks through the content in a thoughtful monologue.
+- **News roundup:** Hosts go through a list of items (tweets, headlines) one by one. Each is read aloud, then discussed.
 
 **Pick your own voices.** Browse [fish.audio/discovery](https://fish.audio/discovery/). Find voices you like. Copy their reference IDs into your config. You can make your hosts sound however you want.
 
