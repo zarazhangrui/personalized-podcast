@@ -188,13 +188,16 @@ Give the user their feed URL and instructions:
 Feed URL: `https://USERNAME.github.io/podcast-feed/feed.xml`
 
 **Spotify setup (one-time, takes 24-48 hours for approval):**
-1. Go to [podcasters.spotify.com](https://podcasters.spotify.com) and sign in
-2. Click "Add existing podcast"
-3. Paste your feed URL
-4. Spotify sends a verification email to the address in your feed — click to verify
-5. Your show appears on Spotify within 24-48 hours
 
-Note: For Spotify, you need an `owner_email` set in your config.yaml. If it's not set, ask the user for their email and add it to the config.
+IMPORTANT: Before proceeding, warn the user: "Heads up — submitting to Spotify makes your podcast **public**. Anyone on Spotify can find and listen to it. The other apps above (Apple Podcasts, Overcast, etc.) are private — only people you share the RSS URL with can find your show. Want to proceed with Spotify?"
+
+If they want to proceed:
+1. Make sure `owner_email` is set in config.yaml. If not, ask for their email and add it.
+2. Go to [podcasters.spotify.com](https://podcasters.spotify.com) and sign in
+3. Click "Add existing podcast"
+4. Paste your feed URL
+5. Spotify sends a verification email — click to verify
+6. Your show appears on Spotify within 24-48 hours
 
 ### 5. Publish episodes
 
