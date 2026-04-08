@@ -2,7 +2,7 @@
 # Sample Configuration — Example filled-in config
 # =============================================================================
 # This shows a working configuration with all fields filled in.
-# Copy to ~/.claude/personalized-podcast/config.yaml and adjust as needed.
+# Copy to ~/.personalized-podcast/config.yaml and adjust as needed.
 # =============================================================================
 
 show_name: "My Daily Digest"

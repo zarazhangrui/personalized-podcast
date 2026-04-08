@@ -87,7 +87,7 @@ They sound like two friends talking over coffee. Not news anchors. Not a lecture
 
 **Pick your own voices.** Browse [fish.audio/discovery](https://fish.audio/discovery/). Find voices you like. Copy their reference IDs into your config. You can make your hosts sound however you want.
 
-**Change the show's personality.** Edit `show_name` and `tone` in `~/.claude/personalized-podcast/config.yaml`. Make it serious, funny, academic, casual, confrontational. Up to you.
+**Change the show's personality.** Edit `show_name` and `tone` in `~/.personalized-podcast/config.yaml`. Make it serious, funny, academic, casual, confrontational. Up to you.
 
 **Set up an RSS feed.** Want episodes delivered to your podcast app automatically? Just ask Claude: "Set up an RSS feed for my podcast." It creates a GitHub Pages feed you can subscribe to in Apple Podcasts, Overcast, Pocket Casts, Snipd, Spotify, or any podcast app that supports RSS.
 
@@ -119,7 +119,7 @@ The entire pipeline runs locally through your coding agent. No separate backend.
   config/
     config.example.yaml                     # Default config with pre-picked voices
 
-~/.claude/personalized-podcast/            # Your data (created automatically)
+~/.personalized-podcast/                   # Your data (created automatically)
   config.yaml                               # Your config
   .env                                      # Your Fish Audio API key
   scripts_output/                           # Generated scripts (JSON)

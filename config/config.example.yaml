@@ -1,7 +1,7 @@
 # =============================================================================
 # Personalized Podcast — Configuration
 # =============================================================================
-# API keys go in ~/.claude/personalized-podcast/.env (NOT here).
+# API keys go in ~/.personalized-podcast/.env (NOT here).
 # =============================================================================
 
 # --- Show Settings ---

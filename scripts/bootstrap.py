@@ -42,7 +42,7 @@ def main():
     args = parser.parse_args()
 
     skill_dir = Path(__file__).parent.parent
-    data_dir = Path.home() / ".claude" / "personalized-podcast"
+    data_dir = Path.home() / ".personalized-podcast"
 
     print("=" * 60)
     print("Personalized Podcast — Setup")

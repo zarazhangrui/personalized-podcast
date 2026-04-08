@@ -91,7 +91,7 @@ def generate_audio(script_segments, config, logger=None):
     if not api_key:
         raise RuntimeError(
             f"Fish Audio API key not found in environment variable '{api_key_env}'.\n"
-            f"Make sure it's set in your .env file at ~/.claude/personalized-podcast/.env"
+            f"Make sure it's set in your .env file at ~/.personalized-podcast/.env"
         )
 
     # Map speakers to Fish Audio voice reference IDs
@@ -187,7 +187,7 @@ def generate_audio(script_segments, config, logger=None):
             raise RuntimeError(
                 "No audio segments were generated.\n\n"
                 "Common causes:\n"
-                "  1. Invalid API key — check FISH_API_KEY in ~/.claude/personalized-podcast/.env\n"
+                "  1. Invalid API key — check FISH_API_KEY in ~/.personalized-podcast/.env\n"
                 "  2. Invalid voice IDs — browse fish.audio/discovery and update config.yaml\n"
                 "  3. API quota exceeded — wait for reset or upgrade your Fish Audio plan"
             )

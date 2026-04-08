@@ -23,13 +23,20 @@ from dotenv import load_dotenv
 
 def get_data_dir():
     """
-    Returns the path to ~/.claude/personalized-podcast/ and creates it
+    Returns the path to ~/.personalized-podcast/ and creates it
     (plus subdirectories) if it doesn't exist yet.
 
     Think of this as the "home base" for all your podcast data —
     config, logs, generated scripts, everything lives here.
+
+    Backwards compatibility: if the old ~/.claude/personalized-podcast path
+    exists and the new ~/.personalized-podcast path does not, the old path
+    is used automatically so existing setups keep working without any migration.
     """
-    data_dir = Path.home() / ".claude" / "personalized-podcast"
+    data_dir = Path.home() / ".personalized-podcast"
+    legacy_dir = Path.home() / ".claude" / "personalized-podcast"
+    if legacy_dir.exists() and not data_dir.exists():
+        data_dir = legacy_dir
     # Create all the subdirectories we need
     for subdir in ["logs", "scripts_output", "episodes"]:
         (data_dir / subdir).mkdir(parents=True, exist_ok=True)
@@ -51,7 +58,7 @@ def load_config(config_path=None):
     Reads your config.yaml file and returns it as a Python dictionary.
 
     If no path is given, looks in the default location:
-    ~/.claude/personalized-podcast/config.yaml
+    ~/.personalized-podcast/config.yaml
 
     Raises a helpful error if the file is missing, so you know
     exactly what to do to fix it.
@@ -65,7 +72,7 @@ def load_config(config_path=None):
         raise FileNotFoundError(
             f"Config file not found at {config_path}\n"
             f"Run the setup first: /personalized-podcast\n"
-            f"Or copy the example: cp ~/.claude/skills/personalized-podcast/config/config.example.yaml {config_path}"
+            f"Or copy the example: cp SKILL_DIR/config/config.example.yaml {config_path}"
         )
 
     with open(config_path, "r") as f:
@@ -102,7 +109,7 @@ def setup_logging(log_dir=None):
     Sets up logging so every pipeline run creates a log file.
 
     Logs go to two places:
-    1. A file: ~/.claude/personalized-podcast/logs/YYYY-MM-DD.log
+    1. A file: ~/.personalized-podcast/logs/YYYY-MM-DD.log
     2. The terminal (stdout) so you can watch in real time
 
     Returns a logger object that all scripts use to record what they're doing.
