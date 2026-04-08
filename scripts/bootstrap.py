@@ -107,20 +107,19 @@ def main():
         print("  Then run this setup again.")
         sys.exit(1)
 
-    # Check gh CLI
+    # Check gh CLI (optional — only needed for RSS feed publishing)
+    gh_available = False
     try:
         result = subprocess.run(["gh", "auth", "status"], capture_output=True, text=True)
         if result.returncode == 0:
             print("  GitHub CLI: installed and authenticated")
+            gh_available = True
         else:
-            print("  GitHub CLI: installed but NOT authenticated")
-            print("  Run: gh auth login")
-            sys.exit(1)
+            print("  GitHub CLI: installed but NOT authenticated (RSS publishing disabled)")
+            print("  Run 'gh auth login' later to enable RSS feed publishing.")
     except FileNotFoundError:
-        print("  GitHub CLI: NOT FOUND")
-        print("  Install with: brew install gh")
-        print("  Then run: gh auth login")
-        sys.exit(1)
+        print("  GitHub CLI: not installed (RSS publishing disabled)")
+        print("  Install with: brew install gh  (only needed for RSS feed publishing)")
 
     # =========================================================
     # Step 5: Create .env file (for API keys)
@@ -224,7 +223,7 @@ def main():
     # =========================================================
     # Step 7: Create GitHub Pages repo
     # =========================================================
-    if not args.skip_repo and config_values.get("github_repo"):
+    if not args.skip_repo and config_values.get("github_repo") and gh_available:
         print("\n[7/7] Setting up GitHub Pages repository...")
         repo_name = config_values["github_repo"]
 
@@ -345,7 +344,7 @@ def main():
     print(f"\nNext steps:")
     print(f"  1. Add your API keys to {env_path}")
     print(f"  2. Customize {config_path} if needed")
-    print(f"  3. Run the pipeline: {data_dir / 'venv' / 'bin' / 'python'} {skill_dir / 'scripts' / 'run_pipeline.py'}")
+    print(f"  3. Generate your first episode with your coding agent: /podcast <your content>")
 
 
 if __name__ == "__main__":
